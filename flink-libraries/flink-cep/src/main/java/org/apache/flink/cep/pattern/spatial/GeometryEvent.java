@@ -23,19 +23,9 @@ import org.locationtech.jts.geom.Geometry;
 /** Base class for all events with geometry info. */
 public abstract class GeometryEvent {
 
-    private Geometry geometry;
-
     public GeometryEvent() {}
 
-    public GeometryEvent(Geometry geometry) {
-        this.geometry = geometry;
-    }
-
-    public void setGeometry(Geometry geometry) {
-        this.geometry = geometry;
-    }
-
     public Geometry getGeometry() {
-        return this.geometry;
+        return null;
     }
 }

@@ -22,7 +22,7 @@ import org.apache.flink.annotation.Internal;
 import org.apache.flink.cep.pattern.conditions.RichIterativeCondition;
 import org.apache.flink.cep.pattern.spatial.GeometryEvent;
 
-import java.util.Optional;
+import org.apache.flink.shaded.guava31.com.google.common.base.Optional;
 
 /**
  * A {@link IntersectCondition condition} which checks if the event intersects with previous event
@@ -62,7 +62,7 @@ public class IntersectCondition<T extends GeometryEvent> extends RichIterativeCo
 
     public IntersectCondition(String prevPatternName, IntersectType intersectType)
             throws Exception {
-        this(prevPatternName, intersectType, Optional.empty());
+        this(prevPatternName, intersectType, Optional.absent());
         if (intersectType != IntersectType.INTERSECT_ALL) {
             throw new Exception("Intersection count cannot be empty for given intersect type");
         }
