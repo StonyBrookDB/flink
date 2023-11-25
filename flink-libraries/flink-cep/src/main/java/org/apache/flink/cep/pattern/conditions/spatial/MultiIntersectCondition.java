@@ -25,13 +25,13 @@ import org.apache.flink.cep.pattern.spatial.GeometryEvent;
 import org.apache.flink.shaded.guava31.com.google.common.base.Optional;
 
 /**
- * A {@link IntersectCondition condition} which checks if the event intersects with previous event
- * returns {@code true} if the original condition returns {@code false}.
+ * A {@link MultiIntersectCondition condition} which checks if the event intersects with previous
+ * event returns {@code true} if the original condition returns {@code false}.
  *
  * @param <T> Type of the element to filter
  */
 @Internal
-public class IntersectCondition<T extends GeometryEvent> extends RichIterativeCondition<T> {
+public class MultiIntersectCondition<T extends GeometryEvent> extends RichIterativeCondition<T> {
     private static final long serialVersionUID = 1L;
 
     private final String prevPatternName;
@@ -39,7 +39,7 @@ public class IntersectCondition<T extends GeometryEvent> extends RichIterativeCo
 
     private final Optional<Integer> intersectionCount;
 
-    public IntersectCondition(
+    public MultiIntersectCondition(
             String prevPatternName,
             IntersectType intersectType,
             Optional<Integer> intersectionCount) {
@@ -48,7 +48,7 @@ public class IntersectCondition<T extends GeometryEvent> extends RichIterativeCo
         this.intersectionCount = intersectionCount;
     }
 
-    public IntersectCondition(
+    public MultiIntersectCondition(
             String prevPatternName, IntersectType intersectType, int intersectionCount)
             throws Exception {
         this(prevPatternName, intersectType, Optional.of(intersectionCount));
@@ -60,7 +60,7 @@ public class IntersectCondition<T extends GeometryEvent> extends RichIterativeCo
         }
     }
 
-    public IntersectCondition(String prevPatternName, IntersectType intersectType)
+    public MultiIntersectCondition(String prevPatternName, IntersectType intersectType)
             throws Exception {
         this(prevPatternName, intersectType, Optional.absent());
         if (intersectType != IntersectType.INTERSECT_ALL) {

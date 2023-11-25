@@ -20,25 +20,28 @@ package org.apache.flink.cep.pattern.spatial;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.util.GeometricShapeFactory;
 
 import java.io.Serializable;
 
-/** Base class for all events with circle info. */
-public abstract class CircleEvent extends GeometryEvent implements Serializable {
+/** Base class for all events with ellipse info. */
+public abstract class EllipseEvent extends GeometryEvent implements Serializable {
 
-    private static final long serialVersionUID = 3L;
+    private static final long serialVersionUID = 4L;
 
     private Double centreX;
     private Double centreY;
-    private Double radius;
+    private Double height;
+    private Double width;
 
-    public CircleEvent() {}
+    public EllipseEvent() {}
 
-    public CircleEvent(Double centreX, Double centreY, Double radius) {
+    public EllipseEvent(Double centreX, Double centreY, Double height, Double width) {
         this.centreX = centreX;
         this.centreY = centreY;
-        this.radius = radius;
+        this.height = height;
+        this.width = width;
     }
 
     public Double getCentreX() {
@@ -49,8 +52,12 @@ public abstract class CircleEvent extends GeometryEvent implements Serializable 
         return centreY;
     }
 
-    public Double getRadius() {
-        return radius;
+    public Double getHeight() {
+        return height;
+    }
+
+    public Double getWidth() {
+        return width;
     }
 
     public void setCentreX(Double centreX) {
@@ -61,17 +68,22 @@ public abstract class CircleEvent extends GeometryEvent implements Serializable 
         this.centreY = centreY;
     }
 
-    public void setRadius(Double radius) {
-        this.radius = radius;
+    public void setHeight(Double height) {
+        this.height = height;
+    }
+
+    public void setWidth(Double width) {
+        this.width = width;
     }
 
     @Override
     public Geometry getGeometry() {
         GeometricShapeFactory shapeFactory = new GeometricShapeFactory();
-        Coordinate centerCoordinate = new Coordinate(centreX, centreY);
-        shapeFactory.setCentre(centerCoordinate);
-        shapeFactory.setSize(2 * radius);
         shapeFactory.setNumPoints(128);
-        return shapeFactory.createCircle();
+        shapeFactory.setCentre(new Coordinate(centreX, centreY));
+        shapeFactory.setHeight(height);
+        shapeFactory.setWidth(width);
+        Polygon ellipse = shapeFactory.createEllipse();
+        return ellipse;
     }
 }
