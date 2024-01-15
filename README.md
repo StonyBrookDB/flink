@@ -1,3 +1,22 @@
+# Spatial-Flink
+
+## Important Highlights
+
+1. To compile the changes run the command **mvn clean install -DskipTests -Dfast -Pskip-webui-build**. It will take around 10-15 minutes.
+2. After the compilation is complete, navigate to *flink-libraries -> flink-cep -> target*. You will be able to see the JAR file **flink-cep-1.18-SNAPSHOT.jar**, which is important for our application.
+3. Copy the mentioned JAR file and paste it as a dependency of our application (for ex. https://github.com/StonyBrookDB/Flink-Kafka-Docker).
+
+## Introduced two new conditions, SingleIntersectCondition and MultiIntersectCondition -
+
+**SingleIntersectCondition**: This condition identifies patterns where a spatial event intersects with a fixed spatial event. To test this, I generated an ellipse/circle based on a given radius and coordinates. The condition then detects a list of coordinates from the dataset that intersects with the circle. For instance, it could list all coordinates within a 1km radius of a given coordinate.
+
+**MultiIntersectCondition**: This condition identifies patterns where a spatial event intersects with previous spatial events. Implemented through a RichIterativeCondition, it checks if all or part of the previously received pattern events intersect with the current event. For example, it can verify if all events or part of past events are within a 2km radius of the coordinates in the current event. The condition allows specifying whether past events need to be continuous.
+
+Both SingleIntersectCondition and MultiIntersectCondition are generic iterative conditions capable of working with any geometries we define. They can check if any geometry intersects with any other specific geometry. *Presently, we have defined events only for Point, Ellipse, and Circle shapes.*
+
+The original flink README starts below.
+
+
 # Apache Flink
 
 Apache Flink is an open source stream processing framework with powerful stream- and batch-processing capabilities.
